@@ -32,7 +32,7 @@ function Card({ children, className, title, icon: Icon, isLoading }: { children:
           <h3 className="text-lg font-bold text-primary">{title}</h3>
         </div>
       )}
-      <div className="p-4 flex-1 h-full relative">
+      <div className="p-3 flex-1 h-full relative">
         {children}
       </div>
     </div>
@@ -49,12 +49,12 @@ function StatBox({ label, value, subLabel, highlight = false, isLoading }: { lab
     );
   }
   return (
-    <div className={cn("flex flex-col items-center justify-center p-3 rounded-lg border transform transition-all duration-500",
+    <div className={cn("flex flex-col items-center justify-center p-2 rounded-lg border transform transition-all duration-500",
       highlight ? "bg-primary/5 border-primary/20" : "bg-slate-50 border-slate-100"
     )}>
-      <span className="text-slate-500 text-sm font-medium mb-1">{label}</span>
-      <span className={cn("text-2xl font-bold", highlight ? "text-primary" : "text-slate-800")}>{value}</span>
-      {subLabel && <span className="text-xs text-slate-400 mt-1">{subLabel}</span>}
+      <span className="text-slate-500 text-[10px] font-medium mb-0.5">{label}</span>
+      <span className={cn("text-xl font-bold", highlight ? "text-primary" : "text-slate-800 leading-none")}>{value}</span>
+      {subLabel && <span className="text-[9px] text-slate-400 mt-0.5 leading-none">{subLabel}</span>}
     </div>
   );
 }
@@ -201,7 +201,7 @@ export default function Dashboard() {
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0">
 
         {/* RIGHT COLUMN: Statistics & Top Quality */}
-        <div className="lg:col-span-3 flex flex-col gap-4 h-full">
+        <div className="lg:col-span-3 flex flex-col gap-3 h-full">
           {/* 2. الاحصائيات (Statistics) - Delay: 800ms */}
           <div className={cn("transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")} style={{ transitionDelay: revealed ? '800ms' : '0ms' }}>
             <Card title="الاحصائيات" icon={Activity} className="h-auto shrink-0" isLoading={!revealed}>
@@ -225,11 +225,11 @@ export default function Dashboard() {
                   </div>
                 ) : (
                   <table className="w-full text-sm text-right animate-in fade-in slide-in-from-bottom-4 duration-[2000ms]">
-                    <thead className="text-xs text-slate-500 bg-slate-50 uppercase border-b sticky top-0">
+                    <thead className="text-[10px] text-slate-500 bg-slate-50 uppercase border-b sticky top-0">
                       <tr>
-                        <th className="px-4 py-3">م</th>
-                        <th className="px-4 py-3">المشارك</th>
-                        <th className="px-4 py-3 text-center">النسبة</th>
+                        <th className="px-3 py-2">م</th>
+                        <th className="px-3 py-2">المشارك</th>
+                        <th className="px-3 py-2 text-center">النسبة</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -291,7 +291,7 @@ export default function Dashboard() {
         </div>
 
         {/* LEFT COLUMN: Achievements & Most Reciting */}
-        <div className="lg:col-span-3 flex flex-col gap-4 h-full">
+        <div className="lg:col-span-3 flex flex-col gap-3 h-full">
           {/* 1. المنجزات (Achievements) - Delay: 0ms */}
           <div className={cn("transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")}>
             <Card title="المنجزات" icon={Target} className="h-auto shrink-0" isLoading={!revealed}>
@@ -314,11 +314,11 @@ export default function Dashboard() {
                   </div>
                 ) : (
                   <table className="w-full text-sm text-right animate-in fade-in slide-in-from-bottom-4 duration-[2000ms]">
-                    <thead className="text-xs text-slate-500 bg-slate-50 uppercase border-b sticky top-0">
+                    <thead className="text-[10px] text-slate-500 bg-slate-50 uppercase border-b sticky top-0">
                       <tr>
-                        <th className="px-4 py-3">م</th>
-                        <th className="px-4 py-3">المشارك</th>
-                        <th className="px-4 py-3 text-center">الصحفات</th>
+                        <th className="px-3 py-2">م</th>
+                        <th className="px-3 py-2">المشارك</th>
+                        <th className="px-3 py-2 text-center">الصحفات</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
