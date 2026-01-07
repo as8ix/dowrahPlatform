@@ -1,5 +1,4 @@
 
-import { startOfDay, subDays, format } from 'date-fns';
 
 // Types
 export interface Student {
@@ -35,8 +34,16 @@ export interface DashboardStats {
         attendance: number;
         goalsAchieved: number;
     };
-    students: any[];
-    topQuality: any[];
+    students: (Student & { pages: number, clean: number, errors: number, cycles: number, quality: number })[];
+    topQuality: (Student & { pages: number, clean: number, errors: number, cycles: number, quality: number })[];
+}
+
+export interface StudentStat extends Student {
+    pages: number;
+    clean: number;
+    errors: number;
+    cycles: number;
+    quality: number;
 }
 
 // Config
@@ -46,7 +53,7 @@ const TEACHERS_COUNT = 12; // Baseline
 export const STUDENTS: Student[] = [];
 
 // No longer needing generateData as we fetch from Excel
-export function generateData(days = 30): Session[] {
+export function generateData(): Session[] {
     return [];
 }
 
@@ -63,7 +70,7 @@ export function calculateStats(sessions: Session[], studentsList: Student[] = ST
     // Now calculated via manual input from Excel ('Khatmas' column)
     const totalCycles = sessions.reduce((acc, s) => acc + (s.khatmas || 0), 0);
 
-    const studentStats: Record<string, any> = {};
+    const studentStats: Record<string, StudentStat> = {};
 
     // Use the provided list (which might come from Excel)
     studentsList.forEach(student => {
@@ -81,6 +88,8 @@ export function calculateStats(sessions: Session[], studentsList: Student[] = ST
         studentStats[student.id] = {
             id: student.id,
             name: student.name,
+            branch: student.branch,
+            branchVolume: vol,
             pages: sPages,
             clean: sClean,
             errors: sErrors,
@@ -92,7 +101,7 @@ export function calculateStats(sessions: Session[], studentsList: Student[] = ST
     // Goals Achieved Calculation:
     // User Request: "Rate of how many students completed (khatam) out of all students"
     const totalStudentsCount = Object.keys(studentStats).length;
-    const studentsWithKhatma = Object.values(studentStats).filter((s: any) => s.cycles >= 1).length;
+    const studentsWithKhatma = Object.values(studentStats).filter((s: StudentStat) => s.cycles >= 1).length;
 
     // Avoid division by zero
     const goalsAchievedRate = totalStudentsCount > 0 ? (studentsWithKhatma / totalStudentsCount) : 0;
@@ -111,7 +120,7 @@ export function calculateStats(sessions: Session[], studentsList: Student[] = ST
             attendance: totalAttendance,
             goalsAchieved: goalsAchievedRate // Modified Logic
         },
-        students: Object.values(studentStats).sort((a: any, b: any) => b.pages - a.pages),
-        topQuality: Object.values(studentStats).sort((a: any, b: any) => b.quality - a.quality),
+        students: Object.values(studentStats).sort((a, b) => b.pages - a.pages),
+        topQuality: Object.values(studentStats).sort((a, b) => b.quality - a.quality),
     };
 }

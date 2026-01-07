@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
+import React, { useState } from 'react';
 import { useQuranData } from '@/lib/hooks';
-import { DashboardStats } from '@/lib/data';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { BookOpen, Award, Users, Mic, Activity, Maximize, Target, FileText } from 'lucide-react';
+import { DashboardStats, Student, Session } from '@/lib/data';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { BookOpen, Award, Activity, Target } from 'lucide-react';
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -21,7 +20,7 @@ function Skeleton({ className }: { className?: string }) {
   return <div className={cn("bg-slate-300 animate-pulse rounded-md", className)} />;
 }
 
-function Card({ children, className, title, icon: Icon, isLoading }: { children: React.ReactNode; className?: string; title?: string; icon?: any; isLoading?: boolean }) {
+function Card({ children, className, title, icon: Icon, isLoading }: { children: React.ReactNode; className?: string; title?: string; icon?: React.ElementType; isLoading?: boolean }) {
   return (
     <div className={cn("bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col transition-all duration-[1500ms]",
       isLoading ? "opacity-90 scale-[0.98]" : "opacity-100 scale-100",
@@ -111,8 +110,7 @@ function DonutChart({ title, subTitle, value, color, isLoading }: { title: strin
 // --- Main Page ---
 
 export default function Dashboard() {
-  const { stats, isLoaded, sessions, students } = useQuranData();
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const { stats } = useQuranData();
   const [revealed, setRevealed] = useState(false);
 
   const handleReveal = () => {
@@ -124,7 +122,7 @@ export default function Dashboard() {
 
     const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
 
-    const interval: any = setInterval(function () {
+    const interval: ReturnType<typeof setInterval> = setInterval(function () {
       const timeLeft = animationEnd - Date.now();
 
       if (timeLeft <= 0) {
@@ -233,7 +231,7 @@ export default function Dashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {displayStats.topQuality.length > 0 ? displayStats.topQuality.slice(0, 5).map((s: any, i: number) => (
+                      {displayStats.topQuality.length > 0 ? displayStats.topQuality.slice(0, 5).map((s: Student & { quality: number }, i: number) => (
                         <tr key={s.id} className="hover:bg-slate-50/50">
                           <td className="px-4 py-4 text-slate-400 font-medium text-base">{i + 1}</td>
                           <td className="px-4 py-4">
@@ -322,7 +320,7 @@ export default function Dashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {displayStats.students.length > 0 ? displayStats.students.slice(0, 5).map((s: any, i: number) => (
+                      {displayStats.students.length > 0 ? displayStats.students.slice(0, 5).map((s: Student & { pages: number }, i: number) => (
                         <tr key={s.id} className="hover:bg-slate-50/50">
                           <td className="px-4 py-4 text-slate-400 font-medium text-base">{i + 1}</td>
                           <td className="px-4 py-4">
