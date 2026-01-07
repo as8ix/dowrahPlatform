@@ -235,13 +235,13 @@ export default function Dashboard() {
                     <tbody className="divide-y divide-slate-100">
                       {displayStats.topQuality.length > 0 ? displayStats.topQuality.slice(0, 5).map((s: Student & { quality: number }, i: number) => (
                         <tr key={s.id} className="hover:bg-slate-50/50">
-                          <td className="px-4 py-4 text-slate-400 font-medium text-base">{i + 1}</td>
-                          <td className="px-4 py-4">
-                            <div className="font-bold text-slate-800 text-xl leading-none">{s.name}</div>
+                          <td className="px-4 py-2 text-slate-400 font-medium text-base">{i + 1}</td>
+                          <td className="px-4 py-2">
+                            <div className="font-bold text-slate-800 text-lg leading-none">{s.name}</div>
                             {/* Empty sublabel placeholder for alignment with Most Reciting */}
-                            <div className="text-xs text-transparent mt-1 select-none">placeholder</div>
+                            <div className="text-[10px] text-transparent mt-0.5 select-none text-right">placeholder</div>
                           </td>
-                          <td className="px-4 py-4 text-center font-black text-primary text-2xl">{(s.quality * 100).toFixed(1)}%</td>
+                          <td className="px-4 py-2 text-center font-black text-primary text-xl">{(s.quality * 100).toFixed(1)}%</td>
                         </tr>
                       )) : (
                         <tr><td colSpan={3} className="p-4 text-center text-slate-400 text-sm">لا توجد بيانات</td></tr>
@@ -324,12 +324,12 @@ export default function Dashboard() {
                     <tbody className="divide-y divide-slate-100">
                       {displayStats.students.length > 0 ? displayStats.students.slice(0, 5).map((s: Student & { pages: number }, i: number) => (
                         <tr key={s.id} className="hover:bg-slate-50/50">
-                          <td className="px-4 py-4 text-slate-400 font-medium text-base">{i + 1}</td>
-                          <td className="px-4 py-4">
-                            <div className="font-bold text-slate-800 text-xl leading-none">{s?.name || 'غير معروف'}</div>
-                            <div className="text-xs text-slate-400 mt-1">{s?.branch}</div>
+                          <td className="px-4 py-2 text-slate-400 font-medium text-base">{i + 1}</td>
+                          <td className="px-4 py-2">
+                            <div className="font-bold text-slate-800 text-lg leading-none">{s?.name || 'غير معروف'}</div>
+                            <div className="text-[10px] text-slate-400 mt-0.5">{s?.branch}</div>
                           </td>
-                          <td className="px-4 py-4 text-center font-black text-primary text-2xl">{s.pages}</td>
+                          <td className="px-4 py-2 text-center font-black text-primary text-xl">{s.pages}</td>
                         </tr>
                       )) : (
                         <tr><td colSpan={3} className="p-4 text-center text-slate-400 text-sm">لا توجد بيانات</td></tr>
