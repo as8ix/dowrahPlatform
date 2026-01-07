@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuranData } from '@/lib/hooks';
 import Link from 'next/link';
 import { ArrowRight, Save, RotateCcw } from 'lucide-react';
@@ -8,12 +8,19 @@ import { ArrowRight, Save, RotateCcw } from 'lucide-react';
 export default function AdminPage() {
     const { students, addSession, resetData } = useQuranData();
     const [formData, setFormData] = useState({
-        studentId: students[0]?.id || '',
+        studentId: '',
         pages: 1,
         errors: 0,
         alerts: 0,
     });
     const [msg, setMsg] = useState('');
+
+    // Set initial student after mount to avoid build-time errors
+    useEffect(() => {
+        if (students && students.length > 0 && !formData.studentId) {
+            setFormData(prev => ({ ...prev, studentId: students[0].id }));
+        }
+    }, [students, formData.studentId]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
