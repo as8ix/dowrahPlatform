@@ -73,8 +73,15 @@ export function useQuranData() {
 
     return {
         sessions,
+        students,
         stats: isLoaded ? calculateStats(sessions, students) : null,
         error,
+        addSession: (session: any) => {
+            console.log('Implementation for addSession is pending as the backend is local Excel files.', session);
+        },
+        resetData: () => {
+            console.log('Resetting data is not supported directly through the hook currently.');
+        }
     };
 }
 

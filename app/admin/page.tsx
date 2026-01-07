@@ -59,9 +59,13 @@ export default function AdminPage() {
                                 onChange={e => setFormData({ ...formData, studentId: e.target.value })}
                                 className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
                             >
-                                {students.map(s => (
-                                    <option key={s.id} value={s.id}>{s.name} - {s.branch}</option>
-                                ))}
+                                {students && students.length > 0 ? (
+                                    students.map(s => (
+                                        <option key={s.id} value={s.id}>{s.name} - {s.branch}</option>
+                                    ))
+                                ) : (
+                                    <option value="">لا يوجد طلاب</option>
+                                )}
                             </select>
                         </div>
 
