@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useQuranData } from '@/lib/hooks';
 import { DashboardStats, Student, Session } from '@/lib/data';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { BookOpen, Award, Activity, Target } from 'lucide-react';
+import { BookOpen, Award, Activity, Target, Maximize } from 'lucide-react';
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -112,6 +113,7 @@ function DonutChart({ title, subTitle, value, color, isLoading }: { title: strin
 export default function Dashboard() {
   const { stats } = useQuranData();
   const [revealed, setRevealed] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const handleReveal = () => {
     setRevealed(true);
