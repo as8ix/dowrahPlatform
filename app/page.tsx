@@ -200,6 +200,27 @@ export default function Dashboard() {
       {/* Grid Layout - Flex-1 to auto-fit remaining height */}
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 lg:min-h-0">
 
+        {/* 0. كشف النتائج (Reveal Overlay) - Mobile: Top (0), Desktop: Overlay for Charts */}
+        {!revealed && (
+          <div className="order-0 lg:col-start-4 lg:col-span-6 lg:row-start-1 lg:row-span-2 z-50 flex flex-col items-center justify-center p-6 gap-8 lg:gap-12 pointer-events-auto">
+            {/* Event End Banner with Gold Glow */}
+            <div className="bg-white/95 backdrop-blur-md border border-amber-400 px-6 py-4 md:px-10 md:py-4 rounded-3xl shadow-[0_0_40px_rgba(251,191,36,0.4)] animate-in fade-in zoom-in-95 duration-1000 border-2 text-center">
+              <h2 className="text-2xl md:text-4xl font-black flex flex-col md:flex-row items-center gap-3 md:gap-4 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 bg-clip-text text-transparent drop-shadow-sm">
+                <Award className="w-8 h-8 md:w-10 md:h-10 text-amber-500 hidden md:block" />
+                <span>انتهت الدورة القرآنية</span>
+                <Award className="w-8 h-8 md:w-10 md:h-10 text-amber-500" />
+              </h2>
+            </div>
+            <button
+              onClick={handleReveal}
+              className="bg-primary text-white px-8 py-3 rounded-full text-xl font-bold shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 animate-bounce flex items-center gap-3 group"
+            >
+              <span>كشف النتائج</span>
+              <Target className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+            </button>
+          </div>
+        )}
+
         {/* 1. الاحصائيات (Statistics) - Mobile: 1, Desktop: Right Top */}
         <div className={cn("order-1 lg:order-3 lg:col-span-3 transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")} style={{ transitionDelay: revealed ? '800ms' : '0ms' }}>
           <Card title="الاحصائيات" icon={Activity} className="h-auto" isLoading={!revealed}>
@@ -236,27 +257,7 @@ export default function Dashboard() {
             <Card className="aspect-square flex items-center justify-center max-h-64 mx-auto w-full" isLoading={!revealed}>
               <DonutChart title="النقاء" subTitle="الصفحات النقية" value={displayStats.overview.qualityRate} color="#b45309" isLoading={!revealed} />
             </Card>
-          </div>
-
-          {!revealed && (
-            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center pointer-events-auto gap-12">
-              <div className="bg-white/95 backdrop-blur-md border border-amber-400 px-6 py-4 md:px-10 md:py-4 rounded-3xl shadow-[0_0_40px_rgba(251,191,36,0.4)] animate-in fade-in zoom-in-95 duration-1000 border-2 text-center">
-                <h2 className="text-2xl md:text-4xl font-black flex flex-col md:flex-row items-center gap-3 md:gap-4 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 bg-clip-text text-transparent drop-shadow-sm">
-                  <Award className="w-8 h-8 md:w-10 md:h-10 text-amber-500 hidden md:block" />
-                  <span>انتهت الدورة القرآنية</span>
-                  <Award className="w-8 h-8 md:w-10 md:h-10 text-amber-500" />
-                </h2>
-              </div>
-              <button
-                onClick={handleReveal}
-                className="bg-primary text-white px-8 py-3 rounded-full text-xl font-bold shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 animate-bounce flex items-center gap-3 group"
-              >
-                <span>كشف النتائج</span>
-                <Target className="w-6 h-6 group-hover:rotate-12 transition-transform" />
-              </button>
-            </div>
-          )}
-        </div>
+          </div>        </div>
 
         {/* 4. الأكثر تسميعاً (Most Reciting) - Mobile: 4, Desktop: Left Bottom */}
         <div className={cn("order-4 lg:order-4 lg:col-span-3 lg:col-start-1 lg:row-start-2 flex flex-col transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")} style={{ transitionDelay: revealed ? '2400ms' : '0ms' }}>
@@ -333,6 +334,6 @@ export default function Dashboard() {
         </div>
 
       </div>
-    </main>
+    </main >
   );
 }
