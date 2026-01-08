@@ -174,20 +174,20 @@ export default function Dashboard() {
   } as DashboardStats;
 
   return (
-    <main className="h-screen w-screen bg-slate-100 direction-rtl p-4 pb-10 overflow-hidden flex flex-col relative" dir="rtl">
+    <main className="min-h-screen w-full bg-slate-100 direction-rtl p-4 pb-10 flex flex-col relative lg:h-screen lg:overflow-hidden" dir="rtl">
 
       {/* Background Pattern Overlay */}
       <div className="fixed inset-0 z-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'url(/background.jpg)', backgroundSize: 'cover' }}></div>
 
       {/* Header */}
-      <header className="relative z-10 mb-4 flex-none flex items-center justify-between bg-white rounded-2xl shadow-sm border border-slate-200 p-3 md:px-6">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 relative">
+      <header className="relative z-10 mb-4 flex-none flex flex-col sm:flex-row items-center justify-between bg-white rounded-2xl shadow-sm border border-slate-200 p-3 md:px-6 gap-4">
+        <div className="flex items-center gap-3 md:gap-4 w-full sm:w-auto">
+          <div className="w-12 h-12 md:w-14 md:h-14 relative flex-shrink-0">
             <Image src="/logo.png" alt="Logo" fill className="object-contain" priority />
           </div>
           <div>
-            <h1 className="text-xl md:text-2xl font-extrabold text-primary">الاحصائيات العامة للدورة القرآنية</h1>
-            <p className="text-secondary font-semibold text-base">مسجد الحديقة - حلقة الجامعيين</p>
+            <h1 className="text-lg md:text-2xl font-extrabold text-primary leading-tight">الاحصائيات العامة للدورة القرآنية</h1>
+            <p className="text-secondary font-semibold text-sm md:text-base">مسجد الحديقة - حلقة الجامعيين</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -198,10 +198,10 @@ export default function Dashboard() {
       </header>
 
       {/* Grid Layout - Flex-1 to auto-fit remaining height */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 lg:min-h-0">
 
-        {/* RIGHT COLUMN: Statistics & Top Quality */}
-        <div className="lg:col-span-3 flex flex-col gap-3 h-full">
+        {/* RIGHT COLUMN - Stats & Top Quality (Stacks second on mobile) */}
+        <div className="lg:col-span-3 flex flex-col gap-3 h-auto lg:h-full order-2 lg:order-1">
           {/* 2. الاحصائيات (Statistics) - Delay: 800ms */}
           <div className={cn("transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")} style={{ transitionDelay: revealed ? '800ms' : '0ms' }}>
             <Card title="الاحصائيات" icon={Activity} className="h-auto shrink-0" isLoading={!revealed}>
@@ -254,9 +254,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* CENTER COLUMN: Charts Only - 3. المعدلات (Rates) - Delay: 1600ms */}
-        <div className="lg:col-span-6 flex flex-col justify-center h-full relative">
-          <div className={cn("grid grid-cols-3 gap-4 h-full max-h-[600px] content-center transition-all duration-[2000ms]", !revealed ? "scale-95 opacity-0" : "scale-100 opacity-100")} style={{ transitionDelay: revealed ? '1600ms' : '0ms' }}>
+        {/* CENTER COLUMN - Charts & Reveal (Center on desktop, after stats on mobile) */}
+        <div className="lg:col-span-6 flex flex-col justify-center h-auto lg:h-full relative order-1 lg:order-2 py-4 lg:py-0">
+          <div className={cn("grid grid-cols-1 sm:grid-cols-3 gap-4 h-full max-h-[600px] content-center transition-all duration-[2000ms]", !revealed ? "scale-95 opacity-0" : "scale-100 opacity-100")} style={{ transitionDelay: revealed ? '1600ms' : '0ms' }}>
             <Card className="aspect-square flex items-center justify-center max-h-64 mx-auto w-full" isLoading={!revealed}>
               <DonutChart title="الإنجاز" subTitle="بناءً على المستهدف" value={displayStats.overview.completionRate} color="#115e59" isLoading={!revealed} />
             </Card>
@@ -271,11 +271,11 @@ export default function Dashboard() {
           {!revealed && (
             <div className="absolute inset-0 z-50 flex flex-col items-center justify-center pointer-events-auto gap-12">
               {/* Event End Banner with Gold Glow */}
-              <div className="bg-white/95 backdrop-blur-md border border-amber-400 px-10 py-4 rounded-3xl shadow-[0_0_40px_rgba(251,191,36,0.4)] animate-in fade-in zoom-in-95 duration-1000 border-2">
-                <h2 className="text-4xl font-black flex items-center gap-4 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 bg-clip-text text-transparent drop-shadow-sm">
-                  <Award className="w-10 h-10 text-amber-500" />
+              <div className="bg-white/95 backdrop-blur-md border border-amber-400 px-6 py-4 md:px-10 md:py-4 rounded-3xl shadow-[0_0_40px_rgba(251,191,36,0.4)] animate-in fade-in zoom-in-95 duration-1000 border-2 text-center">
+                <h2 className="text-2xl md:text-4xl font-black flex flex-col md:flex-row items-center gap-3 md:gap-4 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 bg-clip-text text-transparent drop-shadow-sm">
+                  <Award className="w-8 h-8 md:w-10 md:h-10 text-amber-500 hidden md:block" />
                   <span>انتهت الدورة القرآنية</span>
-                  <Award className="w-10 h-10 text-amber-500" />
+                  <Award className="w-8 h-8 md:w-10 md:h-10 text-amber-500" />
                 </h2>
               </div>
 
@@ -290,8 +290,8 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* LEFT COLUMN: Achievements & Most Reciting */}
-        <div className="lg:col-span-3 flex flex-col gap-3 h-full">
+        {/* LEFT COLUMN - Achievements & Most Reciting (Stacks last on mobile) */}
+        <div className="lg:col-span-3 flex flex-col gap-3 h-auto lg:h-full order-3">
           {/* 1. المنجزات (Achievements) - Delay: 0ms */}
           <div className={cn("transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")}>
             <Card title="المنجزات" icon={Target} className="h-auto shrink-0" isLoading={!revealed}>
