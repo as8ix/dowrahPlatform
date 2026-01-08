@@ -200,62 +200,32 @@ export default function Dashboard() {
       {/* Grid Layout - Flex-1 to auto-fit remaining height */}
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 lg:min-h-0">
 
-        {/* RIGHT COLUMN - Stats & Top Quality (Stacks second on mobile) */}
-        <div className="lg:col-span-3 flex flex-col gap-3 h-auto lg:h-full order-2 lg:order-1">
-          {/* 2. الاحصائيات (Statistics) - Delay: 800ms */}
-          <div className={cn("transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")} style={{ transitionDelay: revealed ? '800ms' : '0ms' }}>
-            <Card title="الاحصائيات" icon={Activity} className="h-auto shrink-0" isLoading={!revealed}>
-              <div className="grid grid-cols-2 gap-3">
-                <StatBox label="المجلس" value="جميع الأيام" highlight isLoading={!revealed} />
-                <StatBox label="المعلمين" value={displayStats.overview.teachers} isLoading={!revealed} />
-                <StatBox label="جلسات التسميع" value={32} isLoading={!revealed} />
-                {/* Spacer to align with Achievements which has a subLabel */}
-                <StatBox label="الحضور الفعلي" value={displayStats.overview.attendance} highlight subLabel=" " isLoading={!revealed} />
-              </div>
-            </Card>
-          </div>
-
-          {/* 5. الأجود تسميعاً (Top Quality) - Delay: 3200ms */}
-          <div className={cn("flex-1 min-h-0 flex flex-col transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")} style={{ transitionDelay: revealed ? '3200ms' : '0ms' }}>
-            <Card title="الأجود تسميعاً" icon={Award} className="h-full" isLoading={!revealed}>
-              <div className="overflow-y-auto pr-1 flex-1 custom-scrollbar">
-                {!revealed ? (
-                  <div className="space-y-4 p-2">
-                    {[1, 2, 3, 4, 5].map(i => <Skeleton key={i} className="h-10 w-full" />)}
-                  </div>
-                ) : (
-                  <table className="w-full text-sm text-right animate-in fade-in slide-in-from-bottom-4 duration-[2000ms]">
-                    <thead className="text-[10px] text-slate-500 bg-slate-50 uppercase border-b sticky top-0">
-                      <tr>
-                        <th className="px-3 py-2">م</th>
-                        <th className="px-3 py-2">المشارك</th>
-                        <th className="px-3 py-2 text-center">النسبة</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {displayStats.topQuality.length > 0 ? displayStats.topQuality.slice(0, 5).map((s: Student & { quality: number }, i: number) => (
-                        <tr key={s.id} className="hover:bg-slate-50/50">
-                          <td className="px-4 py-1.5 text-slate-400 font-medium text-sm">{i + 1}</td>
-                          <td className="px-4 py-1.5">
-                            <div className="font-bold text-slate-800 text-base leading-none">{s.name}</div>
-                            {/* Empty sublabel placeholder for alignment with Most Reciting */}
-                            <div className="text-[10px] text-transparent mt-0.5 select-none text-right">placeholder</div>
-                          </td>
-                          <td className="px-4 py-1.5 text-center font-black text-primary text-lg">{(s.quality * 100).toFixed(1)}%</td>
-                        </tr>
-                      )) : (
-                        <tr><td colSpan={3} className="p-4 text-center text-slate-400 text-sm">لا توجد بيانات</td></tr>
-                      )}
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            </Card>
-          </div>
+        {/* 1. الاحصائيات (Statistics) - Mobile: 1, Desktop: Right Top */}
+        <div className={cn("order-1 lg:order-3 lg:col-span-3 transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")} style={{ transitionDelay: revealed ? '800ms' : '0ms' }}>
+          <Card title="الاحصائيات" icon={Activity} className="h-auto" isLoading={!revealed}>
+            <div className="grid grid-cols-2 gap-3">
+              <StatBox label="المجلس" value="جميع الأيام" highlight isLoading={!revealed} />
+              <StatBox label="المعلمين" value={displayStats.overview.teachers} isLoading={!revealed} />
+              <StatBox label="جلسات التسميع" value={32} isLoading={!revealed} />
+              <StatBox label="الحضور الفعلي" value={displayStats.overview.attendance} highlight subLabel=" " isLoading={!revealed} />
+            </div>
+          </Card>
         </div>
 
-        {/* CENTER COLUMN - Charts & Reveal (Center on desktop, after stats on mobile) */}
-        <div className="lg:col-span-6 flex flex-col justify-center h-auto lg:h-full relative order-1 lg:order-2 py-4 lg:py-0">
+        {/* 2. المنجزات (Achievements) - Mobile: 2, Desktop: Left Top */}
+        <div className={cn("order-2 lg:order-1 lg:col-span-3 transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")}>
+          <Card title="المنجزات" icon={Target} className="h-auto" isLoading={!revealed}>
+            <div className="grid grid-cols-2 gap-3">
+              <StatBox label="المستهدف" value={displayStats.overview.target.toLocaleString()} isLoading={!revealed} />
+              <StatBox label="الختمات" value={displayStats.overview.khatmas.toFixed(2)} highlight subLabel="دورة كاملة" isLoading={!revealed} />
+              <StatBox label="المنجزة" value={displayStats.overview.completed.toLocaleString()} isLoading={!revealed} />
+              <StatBox label="النقية" value={displayStats.overview.clean.toLocaleString()} highlight isLoading={!revealed} />
+            </div>
+          </Card>
+        </div>
+
+        {/* 3. المعدلات (Charts) - Mobile: 3, Desktop: Center */}
+        <div className="order-3 lg:order-2 lg:col-span-6 lg:row-span-2 flex flex-col justify-center h-auto lg:h-full relative py-4 lg:py-0">
           <div className={cn("grid grid-cols-1 sm:grid-cols-3 gap-4 h-full max-h-[600px] content-center transition-all duration-[2000ms]", !revealed ? "scale-95 opacity-0" : "scale-100 opacity-100")} style={{ transitionDelay: revealed ? '1600ms' : '0ms' }}>
             <Card className="aspect-square flex items-center justify-center max-h-64 mx-auto w-full" isLoading={!revealed}>
               <DonutChart title="الإنجاز" subTitle="بناءً على المستهدف" value={displayStats.overview.completionRate} color="#115e59" isLoading={!revealed} />
@@ -270,7 +240,6 @@ export default function Dashboard() {
 
           {!revealed && (
             <div className="absolute inset-0 z-50 flex flex-col items-center justify-center pointer-events-auto gap-12">
-              {/* Event End Banner with Gold Glow */}
               <div className="bg-white/95 backdrop-blur-md border border-amber-400 px-6 py-4 md:px-10 md:py-4 rounded-3xl shadow-[0_0_40px_rgba(251,191,36,0.4)] animate-in fade-in zoom-in-95 duration-1000 border-2 text-center">
                 <h2 className="text-2xl md:text-4xl font-black flex flex-col md:flex-row items-center gap-3 md:gap-4 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 bg-clip-text text-transparent drop-shadow-sm">
                   <Award className="w-8 h-8 md:w-10 md:h-10 text-amber-500 hidden md:block" />
@@ -278,7 +247,6 @@ export default function Dashboard() {
                   <Award className="w-8 h-8 md:w-10 md:h-10 text-amber-500" />
                 </h2>
               </div>
-
               <button
                 onClick={handleReveal}
                 className="bg-primary text-white px-8 py-3 rounded-full text-xl font-bold shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 animate-bounce flex items-center gap-3 group"
@@ -290,56 +258,78 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* LEFT COLUMN - Achievements & Most Reciting (Stacks last on mobile) */}
-        <div className="lg:col-span-3 flex flex-col gap-3 h-auto lg:h-full order-3">
-          {/* 1. المنجزات (Achievements) - Delay: 0ms */}
-          <div className={cn("transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")}>
-            <Card title="المنجزات" icon={Target} className="h-auto shrink-0" isLoading={!revealed}>
-              <div className="grid grid-cols-2 gap-3">
-                <StatBox label="المستهدف" value={displayStats.overview.target.toLocaleString()} isLoading={!revealed} />
-                <StatBox label="الختمات" value={displayStats.overview.khatmas.toFixed(2)} highlight subLabel="دورة كاملة" isLoading={!revealed} />
-                <StatBox label="المنجزة" value={displayStats.overview.completed.toLocaleString()} isLoading={!revealed} />
-                <StatBox label="النقية" value={displayStats.overview.clean.toLocaleString()} highlight isLoading={!revealed} />
-              </div>
-            </Card>
-          </div>
-
-          {/* 4. الأكثر تسميعاً (Most Reciting) - Delay: 2400ms */}
-          <div className={cn("flex-1 min-h-0 flex flex-col transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")} style={{ transitionDelay: revealed ? '2400ms' : '0ms' }}>
-            <Card title="الأكثر تسميعاً" icon={BookOpen} className="h-full" isLoading={!revealed}>
-              <div className="overflow-y-auto pr-1 flex-1 custom-scrollbar">
-                {!revealed ? (
-                  <div className="space-y-4 p-2">
-                    {[1, 2, 3, 4, 5].map(i => <Skeleton key={i} className="h-10 w-full" />)}
-                  </div>
-                ) : (
-                  <table className="w-full text-sm text-right animate-in fade-in slide-in-from-bottom-4 duration-[2000ms]">
-                    <thead className="text-[10px] text-slate-500 bg-slate-50 uppercase border-b sticky top-0">
-                      <tr>
-                        <th className="px-3 py-2">م</th>
-                        <th className="px-3 py-2">المشارك</th>
-                        <th className="px-3 py-2 text-center">الصحفات</th>
+        {/* 4. الأكثر تسميعاً (Most Reciting) - Mobile: 4, Desktop: Left Bottom */}
+        <div className={cn("order-4 lg:order-4 lg:col-span-3 lg:col-start-1 lg:row-start-2 flex flex-col transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")} style={{ transitionDelay: revealed ? '2400ms' : '0ms' }}>
+          <Card title="الأكثر تسميعاً" icon={BookOpen} className="h-full" isLoading={!revealed}>
+            <div className="overflow-y-auto pr-1 flex-1 custom-scrollbar">
+              {!revealed ? (
+                <div className="space-y-4 p-2">
+                  {[1, 2, 3, 4, 5].map(i => <Skeleton key={i} className="h-10 w-full" />)}
+                </div>
+              ) : (
+                <table className="w-full text-sm text-right animate-in fade-in slide-in-from-bottom-4 duration-[2000ms]">
+                  <thead className="text-[10px] text-slate-500 bg-slate-50 uppercase border-b sticky top-0">
+                    <tr>
+                      <th className="px-3 py-2">م</th>
+                      <th className="px-3 py-2">المشارك</th>
+                      <th className="px-3 py-2 text-center">الصحفات</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {displayStats.students.length > 0 ? displayStats.students.slice(0, 5).map((s: Student & { pages: number }, i: number) => (
+                      <tr key={s.id} className="hover:bg-slate-50/50">
+                        <td className="px-4 py-1.5 text-slate-400 font-medium text-sm">{i + 1}</td>
+                        <td className="px-4 py-1.5">
+                          <div className="font-bold text-slate-800 text-base leading-none">{s?.name || 'غير معروف'}</div>
+                          <div className="text-[10px] text-slate-400 mt-0.5">{s?.branch}</div>
+                        </td>
+                        <td className="px-4 py-1.5 text-center font-black text-primary text-lg">{s.pages}</td>
                       </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {displayStats.students.length > 0 ? displayStats.students.slice(0, 5).map((s: Student & { pages: number }, i: number) => (
-                        <tr key={s.id} className="hover:bg-slate-50/50">
-                          <td className="px-4 py-1.5 text-slate-400 font-medium text-sm">{i + 1}</td>
-                          <td className="px-4 py-1.5">
-                            <div className="font-bold text-slate-800 text-base leading-none">{s?.name || 'غير معروف'}</div>
-                            <div className="text-[10px] text-slate-400 mt-0.5">{s?.branch}</div>
-                          </td>
-                          <td className="px-4 py-1.5 text-center font-black text-primary text-lg">{s.pages}</td>
-                        </tr>
-                      )) : (
-                        <tr><td colSpan={3} className="p-4 text-center text-slate-400 text-sm">لا توجد بيانات</td></tr>
-                      )}
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            </Card>
-          </div>
+                    )) : (
+                      <tr><td colSpan={3} className="p-4 text-center text-slate-400 text-sm">لا توجد بيانات</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </Card>
+        </div>
+
+        {/* 5. الأجود تسميعاً (Top Quality) - Mobile: 5, Desktop: Right Bottom */}
+        <div className={cn("order-5 lg:order-5 lg:col-span-3 lg:col-start-10 lg:row-start-2 flex flex-col transition-all duration-[1500ms]", !revealed && "blur-md brightness-90")} style={{ transitionDelay: revealed ? '3200ms' : '0ms' }}>
+          <Card title="الأجود تسميعاً" icon={Award} className="h-full" isLoading={!revealed}>
+            <div className="overflow-y-auto pr-1 flex-1 custom-scrollbar">
+              {!revealed ? (
+                <div className="space-y-4 p-2">
+                  {[1, 2, 3, 4, 5].map(i => <Skeleton key={i} className="h-10 w-full" />)}
+                </div>
+              ) : (
+                <table className="w-full text-sm text-right animate-in fade-in slide-in-from-bottom-4 duration-[2000ms]">
+                  <thead className="text-[10px] text-slate-500 bg-slate-50 uppercase border-b sticky top-0">
+                    <tr>
+                      <th className="px-3 py-2">م</th>
+                      <th className="px-3 py-2">المشارك</th>
+                      <th className="px-3 py-2 text-center">النسبة</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {displayStats.topQuality.length > 0 ? displayStats.topQuality.slice(0, 5).map((s: Student & { quality: number }, i: number) => (
+                      <tr key={s.id} className="hover:bg-slate-50/50">
+                        <td className="px-4 py-1.5 text-slate-400 font-medium text-sm">{i + 1}</td>
+                        <td className="px-4 py-1.5">
+                          <div className="font-bold text-slate-800 text-base leading-none">{s.name}</div>
+                          <div className="text-[10px] text-transparent mt-0.5 select-none text-right">placeholder</div>
+                        </td>
+                        <td className="px-4 py-1.5 text-center font-black text-primary text-lg">{(s.quality * 100).toFixed(1)}%</td>
+                      </tr>
+                    )) : (
+                      <tr><td colSpan={3} className="p-4 text-center text-slate-400 text-sm">لا توجد بيانات</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </Card>
         </div>
 
       </div>
