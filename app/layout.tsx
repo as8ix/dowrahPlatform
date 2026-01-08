@@ -8,8 +8,17 @@ const tajawal = Tajawal({
 });
 
 export const metadata: Metadata = {
-  title: "Quran Dashboard",
-  description: "Dashboard for Quran Memorization",
+  title: "نتائج الدورة القرآنية - جامع الحديقة",
+  description: "نتائج الدَّوْرَةُ القُرْآنِيَّةُ بِمَسْجِدِ الحَدِيقَة",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
+  openGraph: {
+    title: "نتائج الدورة القرآنية - جامع الحديقة",
+    description: "نتائج الدَّوْرَةُ القُرْآنِيَّةُ بِمَسْجِدِ الحَدِيقَة",
+    images: ["/logo.png"],
+  },
 };
 
 export default function RootLayout({
